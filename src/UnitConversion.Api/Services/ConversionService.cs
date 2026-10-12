@@ -105,6 +105,12 @@ public sealed class ConversionService : IConversionService
             throw new ArgumentException($"Unsupported target unit '{toUnit}' for category '{category}'.", nameof(toUnit));
         }
 
+
+        if (value < 0m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), $"The value for {unitCategory.Name} cannot be less than 0.");
+        }
+
         var baseValue = value * fromFactor;
         var result = baseValue / toFactor;
 
@@ -126,6 +132,11 @@ public sealed class ConversionService : IConversionService
         if (!TemperatureUnits.TryGetValue(toUnit, out var toTemperatureUnit))
         {
             throw new ArgumentException($"Unsupported target unit '{toUnit}' for category 'temperature'.", nameof(toUnit));
+        }
+
+        if ((fromTemperatureUnit == TemperatureUnit.Kelvin && value < 0m) || (fromTemperatureUnit == TemperatureUnit.Celsius && value < -273.15m) ||(fromTemperatureUnit == TemperatureUnit.Fahrenheit && value < -459.67m))
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), $"The temperature value is below absolute zero (-273.15°C / -459.67°F / 0K).");
         }
 
         var celsius = ToCelsius(value, fromTemperatureUnit);
