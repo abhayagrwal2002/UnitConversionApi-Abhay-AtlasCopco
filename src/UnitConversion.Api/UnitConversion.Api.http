@@ -1,0 +1,13 @@
+@UnitConversion.Api_HostAddress = http://localhost:5295
+
+POST {{UnitConversion.Api_HostAddress}}/api/conversions
+Content-Type: application/json
+
+{
+  "category": "length",
+  "fromUnit": "meters",
+  "toUnit": "feet",
+  "value": 10
+}
+
+###
